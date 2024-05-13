@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.SchemaTypes.ObjectId;
 
 const UserSchema = new mongoose.Schema({
-    username: {type: String, required: true, unique: true},
-    email: {type: String, required: true, unique: true},
+    username: {type: String, required: [true, 'Username are required'], unique: true},
+    email: {type: String, required: [true, 'Username are required'], unique: true},
     emailConfirmed: Boolean,
     password: {type: String, required: true},
     birthday: {type: Date, required: true},
     role: String,
-    name: {first: {type: String},last: {type: String}},
+    name: {first: {type: String}, last: {type: String}},
     location: String,
     online: Boolean,
     //HobbyIds: [{

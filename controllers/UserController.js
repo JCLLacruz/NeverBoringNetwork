@@ -7,8 +7,8 @@ const transporter = require('../config/nodemailer.js');
 const UserController = {
 	async register(req, res) {
 		try {
-			if (req.body.username == '' || req.body.email == '' || req.body.password == '' || req.body.birthday == '') {
-				res.send({ msg: 'Please fill out all required fields.' });
+			if (req.body.username == '' || req.body.email == '' || req.body.password == '' || req.body.birthday == '' || req.body['name.first'] == '' || req.body['name.last'] == '') {
+				return res.send({ msg: 'Please fill out all required fields.' });
 			}
 			const password = await bcrypt.hash(req.body.password, 10);
 			const user = await User.create({ ...req.body, password, role: 'user', emailConfirmed: false });
@@ -41,7 +41,7 @@ const UserController = {
 			const emailToken = req.params.emailToken;
 			const payload = jwt.verify(emailToken, jwt_secret);
 			await User.updateOne({ email: payload.email }, { $set: { emailConfirmed: true } });
-			res.status(201).send({ msg: 'User email was confirmed.' });
+			res.status(201).send({ msg: 'User email was confirmed. User created.' });
 		} catch (error) {
 			console.error(error);
 			res.status(500).send(error);
