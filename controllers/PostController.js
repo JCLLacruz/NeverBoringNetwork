@@ -1,7 +1,7 @@
 const Post = require("../models/Post");
 
 const PostController ={
-    async create(req,res){
+    async create(req,res) {
         try{
             const post = await Post.create(req.body)
             res.status(201).send(post)
@@ -9,6 +9,16 @@ const PostController ={
             console.error(error)
             res.status(500).send({ msg: "There was a problem creating the post" })
         }
+    },
+    async update(req,res) {
+        try{
+            const post = await Post.findByIdAndUpdate(req.params._id, req.body,
+        { new: true })
+                res.send({ msg: "Post succesfully updated", Post });
+            } catch (error) {
+                console.error(error)
+                res.status(500).send({ msg: "There was a problem updating the post" })
+            }
     },
     async getAll(req,res) {
         try{
@@ -27,7 +37,7 @@ const PostController ={
             //const posts = await Post.find({tittle});
             //res.send(posts);
         //} catch (error) {
-            //console.log(error);
+            //console.error(error);
         //}
     //},
     async getPostsByTittle(req,res) {
@@ -39,7 +49,7 @@ const PostController ={
             });
             res.send(posts);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     },
     async getById(req,res) {
