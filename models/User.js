@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const ObjectId = mongoose.SchemaTypes.ObjectId;
 
 const UserSchema = new mongoose.Schema({
     username: {type: String, required: true, unique: true},
@@ -10,11 +11,20 @@ const UserSchema = new mongoose.Schema({
     name: {first: {type: String},last: {type: String}},
     location: String,
     online: Boolean,
-    HobbyIds: Array,
-    PostIds: Array,
-    FollowersIds: Array,
-    FollowsIds: Array,
-    CommentIds: Array,
+    HobbyIds: [{
+        Type: ObjectId,
+        ref: 'Hobby'
+    }],
+    PostIds: [{
+        Type: ObjectId,
+        ref: 'Post'
+    }],
+    FollowerIds: Array,
+    FollowIds: Array,
+    CommentIds: [{
+        Type: ObjectId,
+        ref: 'Coment'
+    }],
     tokens: [{token: String, userAgent: String}],
 },{timestamps: true});
 

@@ -7,7 +7,7 @@ router.get('/onlineusers', UserController.allOnlineUsers);
 router.get('/getonline/:_id', UserController.getOnline);
 router.get('/confirm/:emailToken', UserController.confirmUser);
 router.get('/id/:_id', UserController.userFindById);
-router.get('/logout/:_id', authentication, UserController.logout);
+router.delete('/logout/:_id', authentication, UserController.logout);
 router.post('/', UserController.register);
 router.post('/login', UserController.login);
 

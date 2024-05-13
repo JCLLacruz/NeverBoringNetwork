@@ -53,11 +53,11 @@ const UserController = {
 				email: req.body.email,
 			});
 			if (!user) {
-				return res.status(400).send({ msg: 'Wrong email or password.' });
+				return res.status(400).send({ msg: 'Email or password are wrong.' });
 			}
-			const isMatch = await bcrypt.compare(req.body.password,user.password)
+			const isMatch = await bcrypt.compare(req.body.password, user.password);
 			if (!isMatch) {
-				return res.status(400).send({ msg: 'Wrong email or password.' });
+				return res.status(400).send({ msg: 'Email or password are wrong.' });
 			}
 			const token = {
 				token: jwt.sign({ _id: user._id }, jwt_secret),
@@ -69,7 +69,7 @@ const UserController = {
 			res.send({ msg: `Welcome ${user.name.first}.`, user, token });
 		} catch (error) {
 			console.error(error);
-			res.send(error);
+			res.status(500).send(error);
 		}
 	},
 	async allOnlineUsers(req, res) {
@@ -92,9 +92,13 @@ const UserController = {
 	},
 	async logout(req, res) {
 		try {
-			const user = await User.findByIdAndUpdate({ _id: req.params._id }, { $pull: { tokens: { token: req.headers.authorization } } }, { new: true });
-			user.online = false;
-			await user.save();
+			const user = await User.findByIdAndUpdate(
+				{ _id: req.params._id },
+				{ $pull: { tokens: { token: req.headers.authorization } }, $set: { online: false } },
+				{ new: true }
+			);
+			// user.online = false;
+			// await user.save();
 			res.send({ msg: 'User logged out', user });
 		} catch (error) {
 			console.error(error);
