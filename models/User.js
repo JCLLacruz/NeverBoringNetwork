@@ -11,20 +11,20 @@ const UserSchema = new mongoose.Schema({
     name: {first: {type: String},last: {type: String}},
     location: String,
     online: Boolean,
-    HobbyIds: [{
-        Type: ObjectId,
-        ref: 'Hobby'
-    }],
+    //HobbyIds: [{
+       // type: ObjectId,
+       // ref: 'Hobby'
+    //}],
     PostIds: [{
-        Type: ObjectId,
+        type: ObjectId,
         ref: 'Post'
     }],
     FollowerIds: Array,
     FollowIds: Array,
-    CommentIds: [{
-        Type: ObjectId,
-        ref: 'Coment'
-    }],
+    //CommentIds: [{
+        //type: ObjectId,
+        //ref: 'Coment'
+    //}],
     tokens: [{token: String, userAgent: String}],
 },{timestamps: true});
 
