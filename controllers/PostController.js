@@ -72,6 +72,19 @@ const PostController ={
             console.error(error);
         }
     },
+    async like(req, res) {
+        try {
+            const post = await Post.findByIdAndUpdate(
+                req.params._id,
+                { $push: { reviews: { userId: req.user._id }}},
+                { new: true }
+            );
+            res.send(post);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({ msg: "There was a problem with your like"});
+        }
+    },
 }
 
 module.exports = PostController;
