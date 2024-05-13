@@ -20,6 +20,15 @@ const PostController ={
                 res.status(500).send({ msg: "There was a problem updating the post" })
             }
     },
+    async delete(req,res) {
+        try {
+            const post = await Post.findByIdAndDelete(req.params._id)
+            res.send({ msg: "Post delete ", post })
+        } catch (error) {
+            console.error(error)
+            res.status(500).send({ msg: "There was a problem trying to remove the post"})
+        }
+    },
     async getAll(req,res) {
         try{
             const posts = await Post.find()
