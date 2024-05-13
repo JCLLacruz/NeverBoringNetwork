@@ -4,8 +4,8 @@ const PostSchema = new mongoose.Schema({
     tittle: String,
     body: String,
     image_path: String,
-    UserId: ObjectId,
-    HobbyId: ObjectId,
+    //UserId: ObjectId,
+    //HobbyId: ObjectId,
     status: String,
     LikeIds: Array,
     CommentsIds: Array
