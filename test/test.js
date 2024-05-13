@@ -34,11 +34,13 @@ describe('Endpoints testing', () => {
 		const dataBaseUser = res.body.user;
 		expect(dataBaseUser).toEqual(testUser);
 	});
+    let token;
 	test ('login', async () => {
         const res = await request(app)
         .post('/users/login')
         .send({email: user.email,password: user.password})
         expect(200)
-        expect(res.body.msg).toBe(`Welcome ${user.name.first}.`)
+        token = res.body.user.token;
+        expect(res.body.msg).toBe(`Welcome ${user.name.first}.`);
     })
 });
