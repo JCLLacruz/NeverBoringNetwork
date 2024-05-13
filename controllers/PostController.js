@@ -76,7 +76,7 @@ const PostController ={
         try {
             const post = await Post.findByIdAndUpdate(
                 req.params._id,
-                { $push: { reviews: { userId: req.user._id }}},
+                { $push: { likes: { like: true, UserId: req.user._id }}},
                 { new: true }
             );
             res.send(post);
