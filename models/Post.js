@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema({
-    tittle: String,
+    title: String,
     body: String,
     image_path: String,
     //UserId: ObjectId,
@@ -13,7 +13,7 @@ const PostSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 PostSchema.index({
-    tittle: "text",
+    title: "text",
 })
 
 const Post = mongoose.model("Post", PostSchema);

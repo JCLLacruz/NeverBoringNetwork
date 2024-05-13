@@ -37,9 +37,9 @@ const PostController ={
             console.error(error);
         }
     },
-    //async getPostsByTittle(req,res) {
+    //async getPostsByTitle(req,res) {
       //  try {
-        //    if (req.params.tittle.length>25){
+        //    if (req.params.title.length>25){
           //      return res.status(400).send("Search too long")
             //}
             //const tittle = new RegExp(req.params.tittle, "i");
@@ -49,11 +49,11 @@ const PostController ={
             //console.error(error);
         //}
     //},
-    async getPostsByTittle(req,res) {
+    async getPostsByTitle(req,res) {
         try {
             const posts = await Post.find({
                 $text: {
-                    $search: req.params.tittle,
+                    $search: req.params.title,
                 }, 
             });
             res.send(posts);
