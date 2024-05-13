@@ -4,7 +4,10 @@ const app = express();
 
 const PORT = 3001;
 
+dbConnection();
+
 app.use(express.json());
 
-app.list(PORT, ()=> console.log(`Server started on port ${PORT}`));
+app.use('/users',require('./routes/users.js'));
 
+app.listen(PORT, ()=> console.log(`Server started on port ${PORT}`));
