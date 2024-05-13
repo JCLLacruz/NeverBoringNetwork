@@ -2,8 +2,14 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.SchemaTypes.ObjectId;
 
 const PostSchema = new mongoose.Schema({
-    title: String,
-    body: String,
+    title: {
+        type: String,
+        required: [true, "Please enter a title"],
+    },
+    body: {
+        type: String,
+        required: [true, "Please enter a body"],
+    },
     image_path: String,
     UserId: {
         type: ObjectId,
