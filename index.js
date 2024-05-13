@@ -3,8 +3,6 @@ const app = express();
 const PORT = 3001;
 const {dbConnection} = require('./config/config.js');
 
-dbConnection()
-
 dbConnection();
 
 app.use(express.json());
