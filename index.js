@@ -12,6 +12,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use('/users',require('./routes/users.js'));
 app.use("/posts", require("./routes/posts.js"));
+app.use("/hobbies", require("./routes/hobbies.js"));
 app.use("/comments", require("./routes/comments.js"));
 
 app.listen(PORT, ()=> console.log(`Server started on port ${PORT}`));

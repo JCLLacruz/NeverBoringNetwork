@@ -13,10 +13,10 @@ const UserSchema = new mongoose.Schema({
     location: String,
     online: Boolean,
     image_path: String,
-    //HobbyIds: [{
-       // type: ObjectId,
-       // ref: 'Hobby'
-    //}],
+    HobbyIds: [{
+       type: ObjectId,
+       ref: 'Hobby'
+    }],
     PostIds: [{
         type: ObjectId,
         ref: 'Post'

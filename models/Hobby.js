@@ -8,13 +8,13 @@ const HobbySchema = new mongoose.Schema({
     PostIds: [{type: ObjectId, ref: 'Post'}]
 },{timestamps: true});
 
-UserSchema.methods.toJSON = function() {
+HobbySchema.methods.toJSON = function() {
     const hobby = this._doc;
     delete hobby.__v;
     return hobby;
 }
 
 
-const User = mongoose.model('User',UserSchema);
+const User = mongoose.model('Hobby',HobbySchema);
 
 module.exports = User;
