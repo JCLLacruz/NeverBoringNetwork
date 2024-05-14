@@ -5,7 +5,7 @@ const PostSchema = new mongoose.Schema({
     title: String,
     body: String,
     image_path: String,
-    //UserId: ObjectId,
+    UserId: ObjectId,
     //HobbyId: ObjectId,
     status: String,
     LikeIds: Array,

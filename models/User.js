@@ -8,7 +8,8 @@ const UserSchema = new mongoose.Schema({
     password: {type: String, required: true},
     birthday: {type: Date, required: true},
     role: String,
-    name: {first: {type: String}, last: {type: String}},
+    firstname: {type: String, required : [true, 'Firstname are required']},
+    lastname: {type: String, required : [true, 'Lastname are required']},
     location: String,
     online: Boolean,
     //HobbyIds: [{
@@ -23,9 +24,9 @@ const UserSchema = new mongoose.Schema({
     FollowIds: Array,
     //CommentIds: [{
         //type: ObjectId,
-        //ref: 'Coment'
+        //ref: 'Comment'
     //}],
-    tokens: [{token: String, userAgent: String}],
+    tokens: [],
 },{timestamps: true});
 
 const User = mongoose.model('User',UserSchema);

@@ -7,11 +7,18 @@ const transporter = require('../config/nodemailer.js');
 const UserController = {
 	async register(req, res) {
 		try {
-			if (req.body.username == '' || req.body.email == '' || req.body.password == '' || req.body.birthday == '' || req.body['name.first'] == '' || req.body['name.last'] == '') {
+			if (
+				req.body.username == '' ||
+				req.body.email == '' ||
+				req.body.password == '' ||
+				req.body.birthday == '' ||
+				req.body.firstname == '' ||
+				req.body.lastname == ''
+			) {
 				return res.send({ msg: 'Please fill out all required fields.' });
 			}
 			const password = await bcrypt.hash(req.body.password, 10);
-			const user = await User.create({ ...req.body, password, role: 'user', emailConfirmed: false });
+			const user = await User.create({ ...req.body, password, role: 'user', emailConfirmed: false, online: false });
 			const emailToken = jwt.sign({ email: req.body.email }, jwt_secret, { expiresIn: '48h' });
 			const url = 'http://localhost:3001/users/confirm/' + emailToken;
 			await transporter.sendMail({
@@ -59,14 +66,11 @@ const UserController = {
 			if (!isMatch) {
 				return res.status(400).send({ msg: 'Email or password are wrong.' });
 			}
-			const token = {
-				token: jwt.sign({ _id: user._id }, jwt_secret),
-				userAgent: req.headers['user-agent'],
-			};
+			const token = jwt.sign({ _id: user._id }, jwt_secret);
 			if (user.tokens.length > 4) user.tokens.shift();
 			user.tokens.push(token);
 			await user.save();
-			res.send({ msg: `Welcome ${user.name.first}.`, user, token });
+			res.send({ msg: `Welcome ${user.firstname}.`, user, token });
 		} catch (error) {
 			console.error(error);
 			res.status(500).send(error);
@@ -81,13 +85,24 @@ const UserController = {
 			res.status(500).send({ msg: 'Server error.', error });
 		}
 	},
-	async userFindById(req, res) {
+	async findUserById(req, res) {
 		try {
 			const user = await User.findOne({ _id: req.params._id });
 			res.send({ msg: `User with id: ${req.params._id} was found.`, user });
 		} catch (error) {
 			console.error(error);
 			res.status(500).send({ msg: `The user with id: ${error.value} does not exist in the database.`, error });
+		}
+	},
+	async findUserByName(req, res) {
+		try {
+			const regName = new RegExp(req.params.firstname, 'i');
+			const user = await User.find({ firstname: regName });
+			console.warn(user);
+			res.send({ msg: `User with firstname: ${user.firstname} was found.`, user });
+		} catch (error) {
+			console.error(error);
+			res.status(500).send({ msg: `The user with name: ${req.params.firstname} does not exist in the database.`, error });
 		}
 	},
 	async logout(req, res) {
@@ -113,6 +128,8 @@ const UserController = {
 				await user.save();
 				return res.send({ msg: `User with Id: ${req.params._id} ist online`, user });
 			} else {
+				user.online = false;
+				await user.save();
 				return res.send({ msg: `User with Id: ${req.params._id} ist offline`, user });
 			}
 		} catch (error) {
@@ -120,6 +137,23 @@ const UserController = {
 			res.status(500).send({ msg: `User status not changed.`, error });
 		}
 	},
+	async follow(req, res) {
+		const user = await User.findById({_id: req.user._id},{$push: {FollowIds: req.params._id}}).populate('FollowIds');
+		const follower = await User.findById({_id: req.params._id},{$push: {FollowerIds: req.user._id}});
+		res.sent({msg: `You follow now ${follower.username}`, user});
+	}
+	// async userInfo(req, res) {
+	// 	const user = await User.findById(req.user._id).populate('PostIds'
+	// 		// {path: 'postIds',
+	// 		// populate: {
+	// 		// 	path: 'commentIds',
+	// 		// },
+	// 		// path: 'hobbyIds',
+	// 		// path: 'FollowerIds',
+	// 		// path: 'FollowIds',}
+	// 	);
+	// 	res.send({msg: 'User info:', user})
+	// },
 };
 
 module.exports = UserController;
