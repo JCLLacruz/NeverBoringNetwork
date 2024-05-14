@@ -33,6 +33,7 @@ const PostController ={
         try{
             const { page = 1, limit = 10 } = req.query;
             const posts = await Post.find()
+                .populate("likes.userId")
                 .limit(limit)
                 .skip((page - 1) * limit);
             res.send(posts)
@@ -85,6 +86,18 @@ const PostController ={
             res.status(500).send({ msg: "There was a problem with your like"});
         }
     },
+    //async dislike(req, res) {
+      //  try {
+        //    const post = await Post.findByIdAndDelete(
+          //      req.params._id,
+            //    { $pull: { likes: { like: true, UserId: req.user._id }} },
+            //);
+            //res.send({ msg: "Like delete ", post });
+        //} catch (error) {
+        //    console.error(error)
+        //    res.status(500).send({ msg: "There was a problem trying to remove the post"})
+
+    //}
 }
 
 module.exports = PostController;
