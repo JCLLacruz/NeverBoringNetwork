@@ -138,9 +138,14 @@ const UserController = {
 		}
 	},
 	async follow(req, res) {
-		const user = await User.findById({_id: req.user._id},{$push: {FollowIds: req.params._id}}).populate('FollowIds');
-		const follower = await User.findById({_id: req.params._id},{$push: {FollowerIds: req.user._id}});
-		res.sent({msg: `You follow now ${follower.username}`, user});
+		try {
+			const user = await User.findById({_id: req.user._id},{$push: {FollowIds: req.params._id}}).populate('FollowIds');
+			const follower = await User.findById({_id: req.params._id},{$push: {FollowerIds: req.user._id}});
+			res.sent({msg: `You follow now ${follower.username}`, user});
+		} catch (error) {
+			console.error(error);
+			res.status(500).send({ msg: `User didn't follow.`, error });
+		}
 	}
 	// async userInfo(req, res) {
 	// 	const user = await User.findById(req.user._id).populate('PostIds'
