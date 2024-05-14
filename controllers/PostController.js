@@ -92,7 +92,7 @@ const PostController ={
         try {
             const post = await Post.findByIdAndDelete(
                 req.params._id,
-                { $pull: { likes: { UserId: req.user._id }} },
+                { $pull: { likes: { UserId: req.user._id }}},
             );
             res.send({ msg: "Like delete ", post });
         } catch (error) {
