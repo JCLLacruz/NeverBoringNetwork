@@ -7,6 +7,7 @@ const transporter = require('../config/nodemailer.js');
 const UserController = {
 	async register(req, res) {
 		try {
+			if (req.file) req.body.profileImg = req.file.filename;
 			if (
 				req.body.username == '' ||
 				req.body.email == '' ||
@@ -18,7 +19,7 @@ const UserController = {
 				return res.send({ msg: 'Please fill out all required fields.' });
 			}
 			const password = await bcrypt.hash(req.body.password, 10);
-			const user = await User.create({ ...req.body, password, role: 'user', emailConfirmed: false, online: false });
+			const user = await User.create({ ...req.body, password, role: 'user', emailConfirmed: false, online: false, image_path: req.file.filename });
 			const emailToken = jwt.sign({ email: req.body.email }, jwt_secret, { expiresIn: '48h' });
 			const url = 'http://localhost:3001/users/confirm/' + emailToken;
 			await transporter.sendMail({
@@ -139,9 +140,9 @@ const UserController = {
 	},
 	async follow(req, res) {
 		try {
-			const user = await User.findByIdAndUpdate({_id: req.user._id},{$push: {FollowIds: req.params._id}},{new: true}).populate('FollowIds');
-			const follower = await User.findByIdAndUpdate({_id: req.params._id},{$push: {FollowerIds: user._id}});
-			res.send({msg: `You follow now ${follower.username}`, user});
+			const user = await User.findByIdAndUpdate({ _id: req.user._id }, { $push: { FollowIds: req.params._id } }, { new: true }).populate('FollowIds');
+			const follower = await User.findByIdAndUpdate({ _id: req.params._id }, { $push: { FollowerIds: user._id } });
+			res.send({ msg: `You follow now ${follower.username}`, user });
 		} catch (error) {
 			console.error(error);
 			res.status(500).send({ msg: `User didn't follow.`, error });
@@ -149,26 +150,26 @@ const UserController = {
 	},
 	async unfollow(req, res) {
 		try {
-			const user = await User.findByIdAndUpdate({_id: req.user._id},{$pull: {FollowIds: req.params._id}},{new: true}).populate('FollowIds');
-			const follower = await User.findByIdAndUpdate({_id: req.params._id},{$pull: {FollowerIds: user._id}});
-			res.send({msg: `You unfollow now ${follower.username}`, user});
+			const user = await User.findByIdAndUpdate({ _id: req.user._id }, { $pull: { FollowIds: req.params._id } }, { new: true }).populate('FollowIds');
+			const follower = await User.findByIdAndUpdate({ _id: req.params._id }, { $pull: { FollowerIds: user._id } });
+			res.send({ msg: `You unfollow now ${follower.username}`, user });
 		} catch (error) {
 			console.error(error);
 			res.status(500).send({ msg: `User didn't unfollow.`, error });
 		}
-	}
-	// async userInfo(req, res) {
-	// 	const user = await User.findById(req.user._id).populate('PostIds'
-	// 		// {path: 'postIds',
-	// 		// populate: {
-	// 		// 	path: 'commentIds',
-	// 		// },
-	// 		// path: 'hobbyIds',
-	// 		// path: 'FollowerIds',
-	// 		// path: 'FollowIds',}
-	// 	);
-	// 	res.send({msg: 'User info:', user})
-	// },
+	},
+	async userInfo(req, res) {
+		const user = await User.findById(req.user._id).populate({
+			path: 'postIds',
+			populate: {
+				path: 'commentIds',
+			},
+			path: 'hobbyIds',
+			path: 'FollowerIds',
+			path: 'FollowIds',
+		});
+		res.send({ msg: 'User info:', user });
+	},
 };
 
 module.exports = UserController;

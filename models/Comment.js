@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.SchemaTypes.ObjectId;
 
-const PostSchema = new mongoose.Schema({
+const CommentSchema = new mongoose.Schema({
     body: {
         type: String,
         required: [true, "Please enter a comment"],

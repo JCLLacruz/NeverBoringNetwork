@@ -12,6 +12,7 @@ const UserSchema = new mongoose.Schema({
     lastname: {type: String, required : [true, 'Lastname are required']},
     location: String,
     online: Boolean,
+    image_path: String,
     //HobbyIds: [{
        // type: ObjectId,
        // ref: 'Hobby'
