@@ -9,7 +9,7 @@ router.delete("/id/:_id", authentication, PostController.delete);
 router.get("/", PostController.getAll);
 router.get("/title/:title", PostController.getPostsByTitle);
 router.get("/id/:_id", PostController.getById);
-router.put("/likes/:_id", authentication, PostController.like);
-//router.delete("/like/:_id", authentication, PostController.dislike);
+router.put("/like/:_id", authentication, PostController.like);
+router.delete("/like/:_id", authentication, PostController.dislike);
 
 module.exports = router;

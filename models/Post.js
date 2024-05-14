@@ -19,7 +19,6 @@ const PostSchema = new mongoose.Schema({
     status: String,
     likes: [{
         UserId: { type: ObjectId, ref: "user" },
-        like: Boolean
     }],
     CommentsIds: Array
 
