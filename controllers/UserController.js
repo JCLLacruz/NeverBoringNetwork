@@ -139,9 +139,9 @@ const UserController = {
 	},
 	async follow(req, res) {
 		try {
-			const user = await User.findById({_id: req.user._id},{$push: {FollowIds: req.params._id}},{new: true}).populate('FollowIds');
-			const follower = await User.findById({_id: req.params._id},{$push: {FollowerIds: user._id}});
-			res.sent({msg: `You follow now ${follower.username}`, user});
+			const user = await User.findByIdAndUpdate({_id: req.user._id},{$push: {FollowIds: req.params._id}},{new: true}).populate('FollowIds');
+			const follower = await User.findByIdAndUpdate({_id: req.params._id},{$push: {FollowerIds: user._id}});
+			res.send({msg: `You follow now ${follower.username}`, user});
 		} catch (error) {
 			console.error(error);
 			res.status(500).send({ msg: `User didn't follow.`, error });
@@ -149,9 +149,9 @@ const UserController = {
 	},
 	async unfollow(req, res) {
 		try {
-			const user = await User.findById({_id: req.user._id},{$pull: {FollowIds: req.params._id}},{new: true}).populate('FollowIds');
-			const follower = await User.findById({_id: req.params._id},{$pull: {FollowerIds: user._id}});
-			res.sent({msg: `You follow now ${follower.username}`, user});
+			const user = await User.findByIdAndUpdate({_id: req.user._id},{$pull: {FollowIds: req.params._id}},{new: true}).populate('FollowIds');
+			const follower = await User.findByIdAndUpdate({_id: req.params._id},{$pull: {FollowerIds: user._id}});
+			res.send({msg: `You unfollow now ${follower.username}`, user});
 		} catch (error) {
 			console.error(error);
 			res.status(500).send({ msg: `User didn't unfollow.`, error });

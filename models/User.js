@@ -20,14 +20,23 @@ const UserSchema = new mongoose.Schema({
         type: ObjectId,
         ref: 'Post'
     }],
-    FollowerIds: Array,
-    FollowIds: Array,
+    FollowerIds: [{type: ObjectId, ref: 'User'}],
+    FollowIds: [{type: ObjectId, ref: 'User'}],
     //CommentIds: [{
         //type: ObjectId,
         //ref: 'Comment'
     //}],
     tokens: [],
 },{timestamps: true});
+
+UserSchema.methods.toJSON = function() {
+    const user = this._doc;
+    delete user.tokens;
+    delete user.password;
+    delete user.__v;
+    return user;
+}
+
 
 const User = mongoose.model('User',UserSchema);
 
