@@ -8,7 +8,8 @@ const UserSchema = new mongoose.Schema({
     password: {type: String, required: true},
     birthday: {type: Date, required: true},
     role: String,
-    name: {first: {type: String}, last: {type: String}},
+    firstname: {type: String, required : [true, 'Firstname are required']},
+    lastname: {type: String, required : [true, 'Lastname are required']},
     location: String,
     online: Boolean,
     //HobbyIds: [{
@@ -19,14 +20,23 @@ const UserSchema = new mongoose.Schema({
         type: ObjectId,
         ref: 'Post'
     }],
-    FollowerIds: Array,
-    FollowIds: Array,
+    FollowerIds: [{type: ObjectId, ref: 'User'}],
+    FollowIds: [{type: ObjectId, ref: 'User'}],
     //CommentIds: [{
         //type: ObjectId,
-        //ref: 'Coment'
+        //ref: 'Comment'
     //}],
-    tokens: [{token: String, userAgent: String}],
+    tokens: [],
 },{timestamps: true});
+
+UserSchema.methods.toJSON = function() {
+    const user = this._doc;
+    delete user.tokens;
+    delete user.password;
+    delete user.__v;
+    return user;
+}
+
 
 const User = mongoose.model('User',UserSchema);
 
