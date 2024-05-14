@@ -11,6 +11,7 @@ router.get('/name/:firstname', UserController.findUserByName);
 router.post('/', UserController.register);
 router.post('/login', UserController.login);
 router.put('/follow/:_id', authentication, UserController.follow);
+router.put('/unfollow/:_id', authentication, UserController.unfollow);
 router.put('/getonline/:_id', authentication, UserController.getOnline);
 router.delete('/logout/:_id', authentication, UserController.logout);
 
