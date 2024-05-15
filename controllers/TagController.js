@@ -20,7 +20,7 @@ const TagController = {
 			const tag = createTag(req);
             const user = await User.findByIdAndUpdate({_id: req.user._id},{$push: {TagIds: {TagId: tag._id}}},{new: true}).populate('TagIds');
             await Tag.findByIdAndUpdate({tag: tag._id},{$push: {UserIds: {UserId: user._id}}},{new: true});
-            res.send({msg:'Tag added', user});
+            res.send({msg:'Tag added', user, tag});
         } catch (error) {
             console.error(error);
 			res.status(500).send({ msg: 'There was a problem add the hobby.' },error);
@@ -31,7 +31,7 @@ const TagController = {
 			const tag = createTag(req);
             const post = await Post.findByIdAndUpdate({_id: req.post._id},{$push: {TagIds: {TagId: tag._id}}},{new: true}).populate('TagIds');
             await Tag.findByIdAndUpdate({tag: tag._id},{$push: {PostIds: {PostId: post._id}}},{new: true});
-            res.send({msg:'Tag added', post});
+            res.send({msg:'Tag added', post, tag});
         } catch (error) {
             console.error(error);
 			res.status(500).send({ msg: 'There was a problem add the hobby.' },error);
