@@ -6,7 +6,7 @@ const PostController = {
 		try {
 			if (req.file) req.body.profileImg = req.file.filename;
 			const post = await Post.create({ ...req.body, image_path: req.file.filename });
-			await User.findByIdAndUpdate(req.user._id, { $push: { PostIds: post._id } });
+			await User.findByIdAndUpdate(req.user._id, { $push: { PostIds: {PostId: post._id} } });
 			res.status(201).send(post);
 		} catch (error) {
 			console.error(error);

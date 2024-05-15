@@ -17,6 +17,9 @@ const PostSchema = new mongoose.Schema({
     },
     //HobbyId: ObjectId,
     status: String,
+    TagIds: [{
+        TagId: {type: ObjectId, ref: 'Tag'}
+    }],
     LikeIds: [{
         UserId: {type: ObjectId, ref: 'User'}
     }],

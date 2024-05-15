@@ -1,7 +1,8 @@
 const request = require('supertest');
 const app = require('../index.js');
+require('dotenv').config();
 const User = require('../models/User.js');
-const {jwt_secret} = require('../config/keys.js')
+const {jwt_secret} = process.env;
 
 describe('Endpoints testing', () => {
 	afterAll(async () => {
