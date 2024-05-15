@@ -68,7 +68,7 @@ const UserController = {
 			if (!isMatch) {
 				return res.status(400).send({ msg: 'Email or password are wrong.' });
 			}
-			const token = jwt.sign({ _id: user._id }, jwt_secret);
+			const token = jwt.sign({ _id: user._id }, JWT_SECRET);
 			if (user.tokens.length > 4) user.tokens.shift();
 			user.tokens.push(token);
 			await user.save();

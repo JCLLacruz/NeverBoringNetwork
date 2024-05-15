@@ -27,10 +27,10 @@ const UserSchema = new mongoose.Schema(
 		],
 		FollowerIds: [{ FollowerId: { type: ObjectId, ref: 'User' } }],
 		FollowIds: [{ FollowId: { type: ObjectId, ref: 'User' } }],
-		//CommentIds: [{
-		//type: ObjectId,
-		//ref: 'Comment'
-		//}],
+		CommentIds: [{
+		type: ObjectId,
+		ref: 'Comment'
+		}],
 		tokens: [],
 	},
 	{ timestamps: true }

@@ -4,7 +4,7 @@ const Tag = require('../models/Tag.js');
 
 const createTag = async (req) => {
 	const regExpTag = new RegExp(req.body.tag, i);
-	const match = await Tag.findOne({regExpTag});
+	const match = await Tag.findOne({tag: regExpTag});
 	if(!match) {
 		const tag = await Tag.create(req.body);
 		return tag;

@@ -35,9 +35,9 @@ const PostController = {
 		try {
 			const { page = 1, limit = 10 } = req.query;
 			const posts = await Post.find()
-				.populate('likes.userId')
-				.limit(limit)
-				.skip((page - 1) * limit);
+			.populate('LikeIds.UserId')
+			.limit(limit)
+			.skip((page - 1) * limit);
 			res.send(posts);
 		} catch (error) {
 			console.error(error);
@@ -69,30 +69,39 @@ const PostController = {
 	},
 	async getById(req, res) {
 		try {
-			const post = await Post.findById(req.params._id);
+			const post = await Post.findById(req.params._id).populate('LikeIds.UserId');
 			res.send(post);
 		} catch (error) {
 			console.error(error);
 		}
 	},
 	async like(req, res) {
-		try {
-			const post = await Post.findByIdAndUpdate(req.params._id, { $push: { likes: { UserId: req.user._id } } }, { new: true });
-			res.send(post);
-		} catch (error) {
-			console.error(error);
-			res.status(500).send({ msg: 'There was a problem with your like' });
-		}
-	},
-	async dislike(req, res) {
-		try {
-			const post = await Post.findByIdAndDelete(req.params._id, { $pull: { likes: { UserId: req.user._id } } });
-			res.send({ msg: 'Like delete ', post });
-		} catch (error) {
-			console.error(error);
-			res.status(500).send({ msg: 'There was a problem trying to remove the post' });
-		}
-	},
+        try {
+            const post = await Post.findByIdAndUpdate(
+                req.params._id,
+                { $push: { LikeIds: { UserId: req.user._id }}},
+                { new: true }
+            );
+            res.send(post);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({ msg: "There was a problem with your like"});
+        }
+    },
+    async dislike(req, res) {
+        try {
+            const post = await Post.findByIdAndUpdate(
+                req.params._id,
+                { $pull: { LikeIds: { UserId: req.user._id }}},
+				{new: true}
+            );
+            res.send({ msg: "Like delete ", post });
+        } catch (error) {
+            console.error(error)
+            res.status(500).send({ msg: "There was a problem trying to remove the post"})
+    
+        }
+    }  
 };
 
 module.exports = PostController;
