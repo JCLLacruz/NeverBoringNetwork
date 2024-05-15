@@ -36,6 +36,8 @@ const UserSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
+UserSchema.index({username: 'text'});
+
 UserSchema.methods.toJSON = function () {
 	const user = this._doc;
 	delete user.tokens;
