@@ -35,7 +35,7 @@ const PostController ={
         try{
             const { page = 1, limit = 10 } = req.query;
             const posts = await Post.find()
-                .populate("likes.userId")
+                .populate("LikeId.UserId")
                 .limit(limit)
                 .skip((page - 1) * limit);
             res.send(posts)
@@ -79,7 +79,7 @@ const PostController ={
         try {
             const post = await Post.findByIdAndUpdate(
                 req.params._id,
-                { $push: { likes: { UserId: req.user._id }}},
+                { $push: { LikeId: { UserId: req.user._id }}},
                 { new: true }
             );
             res.send(post);
@@ -92,7 +92,7 @@ const PostController ={
         try {
             const post = await Post.findByIdAndDelete(
                 req.params._id,
-                { $pull: { likes: { UserId: req.user._id }}},
+                { $pull: { LikeId: { UserId: req.user._id }}},
             );
             res.send({ msg: "Like delete ", post });
         } catch (error) {

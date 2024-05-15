@@ -40,14 +40,40 @@ const CommentController ={
         try {
             const { page = 1, limit = 10 } = req.query;
             const comments = await Comment.find()
-                .populate("likes.userId")
+                .populate("LikeId.userId")
                 .limit(limit)
                 .skip((page - 1) * limit);
             res.send(comments)
         } catch (error) {
             console.error(error);
         }
-    },    
+    },   
+    async like(req, res) {
+        try {
+            const comment = await Comment.findByIdAndUpdate(
+                req.params._id,
+                { $push: { LikeId: { UserId: req.user._id }}},
+                { new: true }
+            );
+            res.send(comment);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({ msg: "There was a problem with your like"});
+        }
+    },
+    async dislike(req, res) {
+        try {
+            const comment = await Comment.findByIdAndDelete(
+                req.params._id,
+                { $pull: { LikeId: { UserId: req.user._id }}},
+            );
+            res.send({ msg: "Like delete ", comment });
+        } catch (error) {
+            console.error(error)
+            res.status(500).send({ msg: "There was a problem trying to remove the post"})
+    
+        }
+    } 
 }
 
 module.exports = CommentController;
