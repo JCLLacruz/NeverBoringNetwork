@@ -54,7 +54,6 @@ describe('Endpoints testing', () => {
 		expect(res.body.msg).toBe(`User with id: ${_id} was found.`);
 	});
     test('getOnline', async () => {
-		console.warn('_id',_id,'token',token);
         const res = await request(app)
         .put(`/users/getonline/${_id}`)
 		.set({ Authorization: token })

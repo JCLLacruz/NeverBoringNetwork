@@ -6,10 +6,8 @@ const { JWT_SECRET } = process.env;
 const authentication = async (req, res, next) => {
 	try {
 		const token = req.headers.authorization;
-		console.warn(token);
 		const payload = jwt.verify(token, JWT_SECRET);
 		const user = await User.findOne({ _id: payload._id, tokens: token });
-		console.warn(user);
 		if (!user) {
 			return res.status(401).send({ msg: 'You are not autorized.' });
 		}
