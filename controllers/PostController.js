@@ -7,7 +7,7 @@ const PostController = {
 			if (req.file) req.body.profileImg = req.file.filename;
 			const post = await Post.create({ ...req.body, image_path: req.file.filename });
 			await User.findByIdAndUpdate(req.user._id, { $push: { PostIds: {PostId: post._id} } });
-			res.status(201).send(post);
+			res.status(201).send({msg: 'Post is created',post});
 		} catch (error) {
 			console.error(error);
 			res.status(500).send({ msg: 'There was a problem creating the post' });
@@ -25,7 +25,7 @@ const PostController = {
 	async delete(req, res) {
 		try {
 			const post = await Post.findByIdAndDelete(req.params._id);
-			res.send({ msg: 'Post delete ', post });
+			res.send({ msg: 'Post deleted', post });
 		} catch (error) {
 			console.error(error);
 			res.status(500).send({ msg: 'There was a problem trying to remove the post' });
@@ -38,23 +38,11 @@ const PostController = {
 			.populate('LikeIds.UserId')
 			.limit(limit)
 			.skip((page - 1) * limit);
-			res.send(posts);
+			res.send({msg: 'All posts', posts});
 		} catch (error) {
 			console.error(error);
 		}
 	},
-	//async getPostsByTitle(req,res) {
-	//  try {
-	//    if (req.params.title.length>25){
-	//      return res.status(400).send("Search too long")
-	//}
-	//const tittle = new RegExp(req.params.tittle, "i");
-	//const posts = await Post.find({tittle});
-	//res.send(posts);
-	//} catch (error) {
-	//console.error(error);
-	//}
-	//},
 	async getPostsByTitle(req, res) {
 		try {
 			const posts = await Post.find({
@@ -62,7 +50,7 @@ const PostController = {
 					$search: req.params.title,
 				},
 			});
-			res.send(posts);
+			res.send({msg: 'Post by title found',posts});
 		} catch (error) {
 			console.error(error);
 		}
@@ -70,7 +58,7 @@ const PostController = {
 	async getById(req, res) {
 		try {
 			const post = await Post.findById(req.params._id).populate('LikeIds.UserId');
-			res.send(post);
+			res.send({msg: 'Post by id found',post});
 		} catch (error) {
 			console.error(error);
 		}
@@ -82,7 +70,7 @@ const PostController = {
                 { $push: { LikeIds: { UserId: req.user._id }}},
                 { new: true }
             );
-            res.send(post);
+            res.send({msg: 'Post liked',post});
         } catch (error) {
             console.error(error);
             res.status(500).send({ msg: "There was a problem with your like"});
@@ -95,7 +83,7 @@ const PostController = {
                 { $pull: { LikeIds: { UserId: req.user._id }}},
 				{new: true}
             );
-            res.send({ msg: "Like delete ", post });
+            res.send({ msg: "Like deleted", post });
         } catch (error) {
             console.error(error)
             res.status(500).send({ msg: "There was a problem trying to remove the post"})
