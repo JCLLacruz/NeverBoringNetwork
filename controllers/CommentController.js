@@ -17,7 +17,7 @@ const CommentController = {
 	async update(req, res) {
 		try {
 			const comment = await Comment.findByIdAndUpdate(req.params._id, req.body, { new: true });
-			res.send({ msg: 'Comment succesfully updated', Comment });
+			res.send({ msg: 'Comment succesfully updated', comment });
 		} catch (error) {
 			console.error(error);
 			res.status(500).send({ msg: 'There was a problem updating the comment' });
