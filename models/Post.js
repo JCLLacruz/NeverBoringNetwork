@@ -1,19 +1,19 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const ObjectId = mongoose.SchemaTypes.ObjectId;
 
 const PostSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [true, "Please enter a title"],
+        required: [true, 'Please enter a title'],
     },
     body: {
         type: String,
-        required: [true, "Please enter a body"],
+        required: [true, 'Please enter a body'],
     },
     image_path: String,
     UserId: {
         type: ObjectId,
-        ref: "User"
+        ref: 'User'
     },
     status: String,
     TagIds: [{
@@ -30,9 +30,9 @@ const PostSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 PostSchema.index({
-    title: "text",
+    title: 'text',
 })
 
-const Post = mongoose.model("Post", PostSchema);
+const Post = mongoose.model('Post', PostSchema);
 
 module.exports = Post;
