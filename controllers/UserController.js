@@ -20,7 +20,15 @@ const UserController = {
 				return res.send({ msg: 'Please fill out all required fields.' });
 			}
 			const password = await bcrypt.hash(req.body.password, 10);
-			const user = await User.create({ ...req.body, password, role: 'user', role: 'user', emailConfirmed: false, online: false, image_path: req.file.filename });
+			const user = await User.create({
+				...req.body,
+				password,
+				role: 'user',
+				role: 'user',
+				emailConfirmed: false,
+				online: false,
+				image_path: req.file.filename,
+			});
 			const emailToken = jwt.sign({ email: req.body.email }, JWT_SECRET, { expiresIn: '48h' });
 			const url = 'http://localhost:3001/users/confirm/' + emailToken;
 			await transporter.sendMail({
@@ -99,8 +107,8 @@ const UserController = {
 	async findUserByName(req, res) {
 		try {
 			const user = await User.findOne({
-				$text: {$search: req.params.username}
-			})
+				$text: { $search: req.params.username },
+			});
 			res.send({ msg: `User with firstname: ${user.firstname} was found.`, user });
 		} catch (error) {
 			console.error(error);
@@ -139,8 +147,12 @@ const UserController = {
 	},
 	async follow(req, res) {
 		try {
-			const user = await User.findByIdAndUpdate({ _id: req.user._id }, { $push: { FollowIds: {FollowId: req.params._id} } }, { new: true }).populate('FollowIds');
-			const follower = await User.findByIdAndUpdate({ _id: req.params._id }, { $push: { FollowerIds: {FollowId: user._id} } });
+			const user = await User.findByIdAndUpdate(
+				{ _id: req.user._id },
+				{ $push: { FollowIds: { FollowId: req.params._id } } },
+				{ new: true }
+			).populate('FollowIds');
+			const follower = await User.findByIdAndUpdate({ _id: req.params._id }, { $push: { FollowerIds: { FollowId: user._id } } });
 			res.send({ msg: `You follow now ${follower.username}`, user });
 		} catch (error) {
 			console.error(error);
@@ -149,8 +161,12 @@ const UserController = {
 	},
 	async unfollow(req, res) {
 		try {
-			const user = await User.findByIdAndUpdate({ _id: req.user._id }, { $pull: { FollowIds: {FollowId: req.params._id} } }, { new: true }).populate('FollowIds');
-			const follower = await User.findByIdAndUpdate({ _id: req.params._id }, { $pull: { FollowerIds: {FollowId: user._id} } });
+			const user = await User.findByIdAndUpdate(
+				{ _id: req.user._id },
+				{ $pull: { FollowIds: { FollowId: req.params._id } } },
+				{ new: true }
+			).populate('FollowIds');
+			const follower = await User.findByIdAndUpdate({ _id: req.params._id }, { $pull: { FollowerIds: { FollowId: user._id } } });
 			res.send({ msg: `You unfollow now ${follower.username}`, user });
 		} catch (error) {
 			console.error(error);
@@ -168,6 +184,37 @@ const UserController = {
 			path: 'FollowIds',
 		});
 		res.send({ msg: 'User info:', user });
+	},
+	async recoverPassword(req, res) {
+		try {
+			const recoverToken = jwt.sign({ email: req.params.email }, JWT_SECRET, {
+				expiresIn: '48h',
+			});
+			const url = 'http://localhost:3000/users/resetPassword/' + recoverToken;
+			await transporter.sendMail({
+				to: req.params.email,
+				subject: 'Recover password',
+				html: `<h3> Recover password </h3>
+	  <a href="${url}">Recover password</a>
+	  You have only 48 hours to change the password with these email.
+	  `,
+			});
+			res.send({
+				message: 'A recover email was sended to your email',
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	},
+	async resetPassword(req, res) {
+		try {
+			const recoverToken = req.params.recoverToken;
+			const payload = jwt.verify(recoverToken, jwt_secret);
+			await User.findOneAndUpdate({ email: payload.email }, { password: req.body.password });
+			res.send({ message: 'Password was changed' });
+		} catch (error) {
+			console.error(error);
+		}
 	},
 };
 
