@@ -98,9 +98,6 @@ const UserController = {
 	},
 	async findUserByName(req, res) {
 		try {
-			// const regName = new RegExp(req.params.firstname, 'i');
-			// const user = await User.findOne({ firstname: regName });
-			// console.warn(user);
 			const user = await User.findOne({
 				$text: {$search: req.params.username}
 			})
@@ -117,8 +114,6 @@ const UserController = {
 				{ $pull: { tokens: { token: req.headers.authorization } }, $set: { online: false } },
 				{ new: true }
 			);
-			// user.online = false;
-			// await user.save();
 			res.send({ msg: 'User logged out', user });
 		} catch (error) {
 			console.error(error);
@@ -168,7 +163,7 @@ const UserController = {
 			populate: {
 				path: 'commentIds',
 			},
-			path: 'hobbyIds',
+			path: 'TagIds',
 			path: 'FollowerIds',
 			path: 'FollowIds',
 		});

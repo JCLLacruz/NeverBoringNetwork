@@ -15,7 +15,6 @@ const PostSchema = new mongoose.Schema({
         type: ObjectId,
         ref: "User"
     },
-    //HobbyId: ObjectId,
     status: String,
     TagIds: [{
         TagId: {type: ObjectId, ref: 'Tag'}
