@@ -8,6 +8,7 @@ const transporter = require('../config/nodemailer.js');
 const UserController = {
 	async register(req, res) {
 		try {
+			console.log(req.body);
 			if (req.file) req.body.profileImg = req.file.filename;
 			if (
 				req.body.username == '' ||
@@ -24,7 +25,6 @@ const UserController = {
 				...req.body,
 				password,
 				role: 'user',
-				role: 'user',
 				emailConfirmed: false,
 				online: false,
 				image_path: req.file.filename,
@@ -40,17 +40,7 @@ const UserController = {
 			res.status(201).send({ msg: `The user's email must be confirmed.`, user });
 		} catch (error) {
 			console.error(error);
-			switch (true) {
-				case error.keyPattern['email']:
-					res.status(400).send({ msg: 'The email has already been used.', error });
-					break;
-				case error.keyPattern['username']:
-					res.status(400).send({ msg: 'The username has already been used.', error });
-					break;
-				default:
-					res.status(500).send({ msg: 'Server error.', error });
-					break;
-			}
+			res.status(500).send({ msg: 'Server error.', error });
 		}
 	},
 	async confirmUser(req, res) {
