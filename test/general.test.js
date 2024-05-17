@@ -71,7 +71,7 @@ describe('Endpoints testing', () => {
 	});
 	test('confirmUser', async() => {
 		const emailToken = jwt.sign({ email: user.email }, JWT_SECRET);
-		const res = await request(app).get('/users/confirm/' + emailToken).expect(200);
+		const res = await request(app).get('/users/confirm/' + emailToken).expect(201);
 		expect(res.body.msg).toBe('User email was confirmed. User created.');
 	});
 	test('login', async () => {
@@ -91,6 +91,34 @@ describe('Endpoints testing', () => {
 	test('getOnline', async () => {
 		const res = await request(app).put(`/users/getonline/${_id}`).set({ Authorization: token }).expect(200);
 		expect(res.body.msg).toBe(`User with Id: ${_id} ist online`);
+	});
+	test('findUserByName', async ()=> {
+		const res = await request(app).get(`/users/name/${user.username}`).expect(200);
+		expect(res.body.msg).toBe(`User with username: ${user.username} was found.`)
+	});
+	test('follow', async () => {
+		const res = await request(app).put(`/users/follow/${_id}`).set({ Authorization: token }).expect(200);
+		expect(res.body.msg).toBe(`You follow now ${user.username}`);
+	});
+	test('unfollow', async () => {
+		const res = await request(app).put(`/users/unfollow/${_id}`).set({ Authorization: token }).expect(200);
+		expect(res.body.msg).toBe(`You unfollow now ${user.username}`);
+	});
+	// test('userInfo', async () => {
+	// 	const res = await request(app).get(`/users/userinfo`).set({ Authorization: token }).expect(200);
+	// 	expect(res.body.msg).toBe('User info:');
+	// });
+	test('recoverPassword', async() => {
+		
+		
+		const res = await request(app).get(`/users/recoverPassword/${user.email}`).expect(200);
+		expect(res.body.msg).toBe('A recover email was sended to your email');
+	});
+	test('resetPassword', async() => {
+		const recoverToken = jwt.sign({ email: user.email }, JWT_SECRET);
+		const res = await request(app).put(`/users/resetPassword/${recoverToken}`)
+		.expect(200);
+		expect(res.body.msg).toBe('Password was changed');
 	});
 	test('logout', async () => {
 		const res = await request(app).delete(`/users/logout/${_id}`).set({ Authorization: token }).expect(200);
