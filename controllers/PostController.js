@@ -86,8 +86,7 @@ const PostController = {
             res.send({ msg: "Like deleted", post });
         } catch (error) {
             console.error(error)
-            res.status(500).send({ msg: "There was a problem trying to remove the post"})
-    
+            res.status(500).send({ msg: "There was a problem trying to remove the like"})
         }
     }  
 };
