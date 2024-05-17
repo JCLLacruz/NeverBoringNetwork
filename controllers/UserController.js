@@ -8,6 +8,7 @@ const transporter = require('../config/nodemailer.js');
 const UserController = {
 	async register(req, res) {
 		try {
+			console.log(req.body);
 			if (req.file) req.body.profileImg = req.file.filename;
 			if (
 				req.body.username == '' ||
@@ -24,7 +25,6 @@ const UserController = {
 				...req.body,
 				password,
 				role: 'user',
-				role: 'user',
 				emailConfirmed: false,
 				online: false,
 				image_path: req.file.filename,
@@ -40,17 +40,7 @@ const UserController = {
 			res.status(201).send({ msg: `The user's email must be confirmed.`, user });
 		} catch (error) {
 			console.error(error);
-			switch (true) {
-				case error.keyPattern['email']:
-					res.status(400).send({ msg: 'The email has already been used.', error });
-					break;
-				case error.keyPattern['username']:
-					res.status(400).send({ msg: 'The username has already been used.', error });
-					break;
-				default:
-					res.status(500).send({ msg: 'Server error.', error });
-					break;
-			}
+			res.status(500).send({ msg: 'Server error.', error });
 		}
 	},
 	async confirmUser(req, res) {
@@ -109,7 +99,7 @@ const UserController = {
 			const user = await User.findOne({
 				$text: { $search: req.params.username },
 			});
-			res.send({ msg: `User with firstname: ${user.firstname} was found.`, user });
+			res.send({ msg: `User with username: ${user.username} was found.`, user });
 		} catch (error) {
 			console.error(error);
 			res.status(500).send({ msg: `The user with name: ${req.params.username} does not exist in the database.`, error });
@@ -190,7 +180,7 @@ const UserController = {
 			const recoverToken = jwt.sign({ email: req.params.email }, JWT_SECRET, {
 				expiresIn: '48h',
 			});
-			const url = 'http://localhost:3000/users/resetPassword/' + recoverToken;
+			const url = 'http://localhost:3001/users/resetPassword/' + recoverToken;
 			await transporter.sendMail({
 				to: req.params.email,
 				subject: 'Recover password',
@@ -200,7 +190,7 @@ const UserController = {
 	  `,
 			});
 			res.send({
-				message: 'A recover email was sended to your email',
+				msg: 'A recover email was sended to your email',
 			});
 		} catch (error) {
 			console.error(error);
@@ -209,9 +199,9 @@ const UserController = {
 	async resetPassword(req, res) {
 		try {
 			const recoverToken = req.params.recoverToken;
-			const payload = jwt.verify(recoverToken, jwt_secret);
+			const payload = jwt.verify(recoverToken,JWT_SECRET);
 			await User.findOneAndUpdate({ email: payload.email }, { password: req.body.password });
-			res.send({ message: 'Password was changed' });
+			res.send({ msg: 'Password was changed' });
 		} catch (error) {
 			console.error(error);
 		}

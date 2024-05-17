@@ -15,7 +15,8 @@ router.post('/login', UserController.login);
 router.put('/follow/:_id', authentication, UserController.follow);
 router.put('/unfollow/:_id', authentication, UserController.unfollow);
 router.put('/getonline/:_id', authentication, UserController.getOnline);
-router.put('/resetPassword/:recoverToken',UserController.resetPassword)
 router.delete('/logout/:_id', authentication, UserController.logout);
+router.get('/recoverPassword/:email', UserController.recoverPassword);
+router.put('/resetPassword/:recoverToken', UserController.resetPassword);
 
 module.exports = router;
