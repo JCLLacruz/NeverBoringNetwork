@@ -1,5 +1,12 @@
 module.exports = {
     components:{
+        securitySchemes: {
+            bearerAuth: {
+              type: 'apiKey',
+              scheme: 'Authorization',
+              in: 'header',
+            },
+          },
         schemas:{
             Post:{
                 type:'object',
@@ -186,7 +193,19 @@ module.exports = {
                     },
                 }
             },
+            TagInput:{
+                type:'object',
+                properties:{
+                    tag:{
+                        type:'string',
+                        description:'Tag name',
+                        example:'Football'
+                    },
+                }
+            },
         }
     }
 }
+
+
 

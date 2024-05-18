@@ -1,159 +1,155 @@
 module.exports = {
 	'/tags/addtagtopost/{postId}': {
 		put: {
-			tags: ['Tags'],
-			summary: 'Add a tag to a post',
-			security: [
-				{
-					bearerAuth: [],
-				},
-			],
-			parameters: [
-				{
-					name: 'postId',
-					in: 'path',
-					required: true,
-					schema: {
-						type: 'string',
-					},
-					description: 'ID of the post',
-				},
-			],
-			requestBody: {
-				required: true,
-				content: {
-					'application/json': {
-						schema: {
-							type: 'object',
-							properties: {
-								tag: {
-									type: 'string',
-									description: 'Tag to add',
-								},
-							},
-						},
-					},
-				},
+			security: [{
+				ApiKeyAuth: [ ]
+			  }],
+		  tags: ['Tags'],
+		  summary: 'Add a tag to a post',
+		  security: [
+			{
+			  bearerAuth: [],
 			},
-			responses: {
-				200: {
-					description: 'Tag added to post',
-				},
-				404: {
-					description: 'Post not found',
-				},
-				401: {
-					description: 'Unauthorized',
-				},
+		  ],
+		  parameters: [
+			{
+			  name: 'postId',
+			  in: 'path',
+			  required: true,
+			  schema: {
+				type: 'string',
+			  },
+			  description: 'ID of the post',
 			},
+		  ],
+		  requestBody: {
+			required: true,
+			content: {
+			  'application/json': {
+				schema: {
+				  $ref: '#/components/schemas/TagInput',
+				},
+			  },
+			},
+		  },
+		  responses: {
+			200: {
+			  description: 'Tag added to post',
+			},
+			404: {
+			  description: 'Post not found',
+			},
+			401: {
+			  description: 'Unauthorized',
+			},
+		  },
 		},
-	},
-	'/tags/addtagtouser': {
+	  },
+	  '/tags/addtagtouser': {
 		put: {
-			tags: ['Tags'],
-			summary: 'Add a tag to a user',
-			security: [
-				{
-					bearerAuth: [],
-				},
-			],
-			requestBody: {
-				required: true,
-				content: {
-					'application/json': {
-						schema: {
-							type: 'object',
-							properties: {
-								userId: {
-									type: 'string',
-									description: 'ID of the user',
-								},
-								tag: {
-									type: 'string',
-									description: 'Tag to add',
-								},
-							},
-						},
-					},
-				},
+			security: [{
+				ApiKeyAuth: [ ]
+			  }],
+		  tags: ['Tags'],
+		  summary: 'Add a tag to a user',
+		  security: [
+			{
+			  bearerAuth: [],
 			},
-			responses: {
-				200: {
-					description: 'Tag added to user',
+		  ],
+		  requestBody: {
+			required: true,
+			content: {
+			  'application/json': {
+				schema: {
+				  $ref: '#/components/schemas/TagInput',
 				},
-				404: {
-					description: 'User not found',
-				},
-				401: {
-					description: 'Unauthorized',
-				},
+			  },
 			},
+		  },
+		  responses: {
+			200: {
+			  description: 'Tag added to user',
+			},
+			404: {
+			  description: 'User not found',
+			},
+			401: {
+			  description: 'Unauthorized',
+			},
+		  },
 		},
-	},
-	'/tags/deletetagtouser/id/{tagId}': {
+	  },
+	  '/tags/deletetagtouser/id/{tagId}': {
 		delete: {
-			tags: ['Tags'],
-			summary: 'Delete a tag from a user',
-			security: [
-				{
-					bearerAuth: [],
-				},
-			],
-			parameters: [
-				{
-					name: 'tagId',
-					in: 'path',
-					required: true,
-					schema: {
-						type: 'string',
-					},
-					description: 'ID of the tag to delete',
-				},
-			],
-			responses: {
-				200: {
-					description: 'Tag deleted from user',
-				},
-				404: {
-					description: 'Tag or user not found',
-				},
-				401: {
-					description: 'Unauthorized',
-				},
+			security: [{
+				ApiKeyAuth: [ ]
+			  }],
+		  tags: ['Tags'],
+		  summary: 'Delete a tag from a user',
+		  security: [
+			{
+			  bearerAuth: [],
 			},
+		  ],
+		  parameters: [
+			{
+			  name: 'tagId',
+			  in: 'path',
+			  required: true,
+			  schema: {
+				type: 'string',
+			  },
+			  description: 'ID of the tag to delete',
+			},
+		  ],
+		  responses: {
+			200: {
+			  description: 'Tag deleted from user',
+			},
+			404: {
+			  description: 'Tag or user not found',
+			},
+			401: {
+			  description: 'Unauthorized',
+			},
+		  },
 		},
-	},
-	'/tags/deletetagtopost/id/{postId}': {
+	  },
+	  '/tags/deletetagtopost/id/{postId}': {
 		delete: {
-			tags: ['Tags'],
-			summary: 'Delete a tag from a post',
-			security: [
-				{
-					bearerAuth: [],
-				},
-			],
-			parameters: [
-				{
-					name: 'postId',
-					in: 'path',
-					required: true,
-					schema: {
-						type: 'string',
-					},
-					description: 'ID of the post',
-				},
-			],
-			responses: {
-				200: {
-					description: 'Tag deleted from post',
-				},
-				404: {
-					description: 'Tag or post not found',
-				},
-				401: {
-					description: 'Unauthorized',
-				},
+			security: [{
+				ApiKeyAuth: [ ]
+			  }],
+		  tags: ['Tags'],
+		  summary: 'Delete a tag from a post',
+		  security: [
+			{
+			  bearerAuth: [],
 			},
+		  ],
+		  parameters: [
+			{
+			  name: 'postId',
+			  in: 'path',
+			  required: true,
+			  schema: {
+				type: 'string',
+			  },
+			  description: 'ID of the post',
+			},
+		  ],
+		  responses: {
+			200: {
+			  description: 'Tag deleted from post',
+			},
+			404: {
+			  description: 'Tag or post not found',
+			},
+			401: {
+			  description: 'Unauthorized',
+			},
+		  },
 		},
-	},
+	  },
 };

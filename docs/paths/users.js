@@ -115,6 +115,9 @@ module.exports = {
 	},
 	'/users/userinfo': {
 		get: {
+      security: [{
+        ApiKeyAuth: [ ]
+      }],
 			tags: ['Users'],
 			summary: 'Get user information',
 			security: [
@@ -313,6 +316,9 @@ module.exports = {
 	},
 	'/users/follow/{_id}': {
 		put: {
+      security: [{
+        ApiKeyAuth: [ ]
+      }],
 			tags: ['Users'],
 			summary: 'Follow a user',
 			security: [
@@ -346,6 +352,9 @@ module.exports = {
 	},
 	'/users/unfollow/{_id}': {
 		put: {
+      security: [{
+        ApiKeyAuth: [ ]
+      }],
 			tags: ['Users'],
 			summary: 'Unfollow a user',
 			security: [
@@ -379,6 +388,9 @@ module.exports = {
 	},
 	'/users/getonline/{_id}': {
 		put: {
+      security: [{
+        ApiKeyAuth: [ ]
+      }],
 			tags: ['Users'],
 			summary: 'Set user online status',
 			security: [
@@ -412,6 +424,9 @@ module.exports = {
 	},
 	'/users/logout/{_id}': {
 		delete: {
+      security: [{
+        ApiKeyAuth: [ ]
+      }],
 			tags: ['Users'],
 			summary: 'Log out a user',
 			security: [
