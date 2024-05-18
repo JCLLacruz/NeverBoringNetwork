@@ -23,6 +23,7 @@ Si en algún momento queremos podremos, modificar o eliminar una de nuestras pub
 - Dotenv
 - Nodemailer
 - Swagger
+- Node-Cron
 
 ```bash
   npm init -y
