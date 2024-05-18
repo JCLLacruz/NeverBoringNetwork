@@ -22,6 +22,7 @@ Si en algún momento queremos podremos, modificar o eliminar una de nuestras pub
 - Multer
 - Dotenv
 - Nodemailer
+- Node-Cron
 
 ```bash
   npm init -y

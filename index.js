@@ -4,8 +4,9 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 const { dbConnection } = require('./config/config.js');
 const path = require('path');
-const swaggerUI = require('swagger-ui-express')
-const docs = require('./docs/index')
+const swaggerUI = require('swagger-ui-express');
+const docs = require('./docs/index');
+require('./crons/cleanupUsers.js');
 
 dbConnection();
 
@@ -18,7 +19,7 @@ app.use('/posts', require('./routes/posts.js'));
 app.use('/tags', require('./routes/tags.js'));
 app.use('/comments', require('./routes/comments.js'));
 
-app.use('/api-docs', swaggerUI.serve,swaggerUI.setup(docs));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(docs));
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
