@@ -23,6 +23,7 @@ Si en algún momento queremos podremos, modificar o eliminar una de nuestras pub
 - Dotenv
 - Nodemailer
 - Swagger
+- Jest
 - Node-Cron
 
 ```bash
@@ -81,6 +82,8 @@ Las etiquetas serían como los intereses de los usuarios, por lo que a tráves d
 ## Documentación API
 
 https://documenter.getpostman.com/view/34523030/2sA3JRaepN
+
+
 
 
 
