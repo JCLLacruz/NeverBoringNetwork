@@ -8,6 +8,9 @@ const dbConnection = async () => {
 		if (process.env.NODE_ENV === 'test') {
 			console.log('DATABASE for tests conected');
 			return await mongoose.connect(MONGO_URI_TEST);
+		}else if (process.env.NODE_ENV === 'production'){
+			console.log('DATABASE for tests conected');
+			return await mongoose.connect(MONGO_URI_PROD);
 		} else {
 			console.log('DATABASE conected');
 			return await mongoose.connect(MONGO_URI);
