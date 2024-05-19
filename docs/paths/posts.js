@@ -45,6 +45,7 @@ module.exports = {
             },
           },  
       },
+    },
       "/posts/{_id}": {
         put: {
           tags: {
@@ -75,8 +76,7 @@ module.exports = {
             500: { description: "Server error" },
           },
         },
-      },
-      delete: {
+        delete: {
         tags: {
           Posts: "Delete a post",
         },

@@ -45,6 +45,7 @@ module.exports = {
           },
         },  
     },
+  },
     "/comments/{_id}": {
       put: {
         tags: {
@@ -75,7 +76,6 @@ module.exports = {
           500: { description: "Server error" },
         },
       },
-    },
     delete: {
       tags: {
         Comments: "Delete a comment",
