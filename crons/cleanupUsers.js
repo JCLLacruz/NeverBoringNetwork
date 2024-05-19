@@ -6,8 +6,8 @@ const User = require('../models/User');
 cron.schedule('0 8 * * 1', async () => {
   try {
     await User.deleteMany({ emailConfirmed: false });
-    logger.info('All users with email not confirmed deleted');
+    console.log('All users with email not confirmed deleted');
   } catch (error) {
-    logger.error('Error deleting unconfirmed users:', error);
+    console.log('Error deleting unconfirmed users:', error);
   }
 });

@@ -190,7 +190,7 @@ const UserController = {
 	  `,
 			});
 			res.send({
-				msg: 'ccc',
+				msg: 'A recover email was sended to your email',
 			});
 		} catch (error) {
 			console.error(error);
