@@ -75,7 +75,62 @@ module.exports = {
                         example:'664367465446a8d1920969de'
                     }
                 }
-            }
+            },
+            _id:{
+                type:'objectId',
+                description:"An id of a task",
+                example: "6201064b0028de7866e2b2c4"
+            },
+            Comment:{
+                type:'object',
+                properties:{
+                    _id:{
+                        type:'objectId',
+                        description:'Comment identification number',
+                        example:'6201064b0028de7866e2b2c4'
+                    },
+                    body:{
+                        type:'string',
+                        description:'Comment body',
+                        example:'I love it'
+                    },
+                    PostId:{
+                        type:'objectId',
+                        description:'Post identification number',
+                        example:'664367465446a8d1920969de'
+                    },
+                    UserId:{
+                        type:'objectId',
+                        description:'user identification number',
+                        example:'664367465446a8d1920969de'
+                    },
+                    LikeIds: [{
+                        type:'objectId',
+                        description:'likes identification number',
+                        example:'664367465446a8d1920969de'
+                    }],
+                }
+            },
+            CommentInput:{
+                type:'object',
+                properties:{
+                    body:{
+                        type:'string',
+                        description:'Comment body',
+                        example:'I love it'
+                    },
+                    PostId:{
+                        type:'objectId',
+                        description:'Post identification number',
+                        example:'664367465446a8d1920969de'
+                    },
+                    UserId:{
+                        type:'objectId',
+                        description:'user identification number',
+                        example:'664367465446a8d1920969de'
+                    },
+                }
+            },
         }
     }
 }
