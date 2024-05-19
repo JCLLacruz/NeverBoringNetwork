@@ -3,11 +3,9 @@ const faker = require('faker');
 const User = require('../models/User.js');
 const Comment = require('../models/Comment.js');
 const bcrypt = require('bcryptjs');
+const { dbConnection } = require('../config/config.js');
 
-mongoose.connect('mongodb+srv://19lacruz88:s0nt9CoErZQv5DDC@cluster0.v9ddaoo.mongodb.net/neverboringnetworktest', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+dbConnection();
 
 const seedUsers = async () => {
     for (let i = 0; i < 20; i++) {
@@ -15,7 +13,7 @@ const seedUsers = async () => {
         const user = new User({
             username: `SecondUser${i + 1}`,
             email: faker.internet.email(),
-            emailConfirmed: faker.datatype.boolean(),
+            emailConfirmed: false,
             password: password,
             birthday: faker.date.past(30, new Date('2000-01-01')),
             role: 'user',
